@@ -22,7 +22,6 @@ router.post('/questions', checkAdmin, async (req, res) => {
       return res.status(400).json({ success: false, message: 'Questions array required' });
     }
     let success = 0, failed = 0;
-    const errors = [];
     for (const q of questions) {
       try {
         await pool.query(
@@ -30,15 +29,10 @@ router.post('/questions', checkAdmin, async (req, res) => {
           [q.chapter_id, q.level || 1, q.category || 'easy_objective', q.question_type || 'mcq', q.question_text, q.option_a || null, q.option_b || null, q.option_c || null, q.option_d || null, q.correct_option || null, q.answer_text || null, q.explanation || null, q.difficulty || 'Easy', q.marks || 1]
         );
         success++;
-      } catch (e) {
-        failed++;
-        errors.push({ q: q.question_text?.slice(0, 30), err: e.message });
-      }
+      } catch (e) { failed++; }
     }
-    res.json({ success: true, total: questions.length, success_count: success, failed, errors: errors.slice(0, 10) });
-  } catch (e) {
-    res.status(500).json({ success: false, message: e.message });
-  }
+    res.json({ success: true, total: questions.length, success_count: success, failed });
+  } catch (e) { res.status(500).json({ success: false, message: e.message }); }
 });
 
 module.exports = router;
