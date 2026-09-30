@@ -18,6 +18,7 @@ const messagesRoutes = require('./routes/messages.routes');
 const friendsRoutes = require('./routes/friends.routes');
 const quizRoutes = require('./routes/quiz.routes');
 const achievementsRoutes = require('./routes/achievements.routes');
+const bulkRoutes = require('./routes/bulk.routes');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -44,5 +45,6 @@ app.use('/api/messages', messagesRoutes);
 app.use('/api/friends', friendsRoutes);
 app.use('/api/quiz', quizRoutes);
 app.use('/api/achievements', achievementsRoutes);
+app.use('/api/bulk', bulkRoutes);
 
 app.listen(PORT, '0.0.0.0', () => console.log('✅ EduAmici Backend running on port ' + PORT));
